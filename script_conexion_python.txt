@@ -1,0 +1,25 @@
+import psycopg2
+
+try:
+    connection = psycopg2.connect(
+        host = 'localhost',
+        user = 'postgres',
+        password = '1000',
+        database = 'spotify'
+    )
+    print("Conexión exisotsa")
+    cursor = connection.cursor()
+    cursor.execute("select * from song")
+    cursor.execute("select * from song_artists")
+    cursor.execute("select * from artist")
+    cursor.execute("select * from genre")
+    cursor.execute("select * from information")
+    cursor.execute("select * from specs")
+    rows = cursor.fetchall()
+    for row in rows:
+        print(row)
+except Exception as ex:
+    print(ex)
+finally:
+    connection.close()
+    print("Conexion finalizada")

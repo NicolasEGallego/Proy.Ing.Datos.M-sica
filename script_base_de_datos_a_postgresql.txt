@@ -1,0 +1,90 @@
+-- Creación de las tablas
+
+create table genre(
+	genre_id integer primary key,
+	genre_name character varying(120));
+
+create table artist(
+	artist_id integer primary key,
+	artist_name character varying(120));
+
+create table song_artists(
+	artists_id integer primary key,
+	track_id character varying(70),
+	artist_id_1 integer references artist(artist_id),
+	artist_id_2 integer references artist(artist_id),
+	artist_id_3 integer references artist(artist_id),
+	artist_id_4 integer references artist(artist_id),
+	artist_id_5 integer references artist(artist_id));
+
+create table song(
+	track_id character varying(70) primary key,
+	artists_id integer references song_artists(artists_id),
+	track_name character varying(500),
+	album_name character varying(500),
+ 	genre_id integer references genre(genre_id));
+
+create table information(
+	track_id character varying(120) references song(track_id),
+	popularity integer,
+	duration_ms decimal,
+	explicit character varying(10),
+	danceability integer,
+	energy integer,
+	tempo decimal);
+
+create table specs(
+	track_id character varying(120) references song(track_id),
+	key integer,
+	loudness integer,
+	mode integer,
+	speechiness integer,
+	acoousticness integer,
+	liveness integer,
+	valence integer,
+	time_signature integer);
+
+drop table genre;
+drop table song_artists;
+drop table artist;
+drop table information;
+drop table specs;
+drop table song;
+
+-- Exportación de los datos de csv a postgresql
+
+copy
+	genre(genre_id, genre_name)
+	from 'C:\Users\Public\csv\genre.csv' delimiter ';' csv header;
+
+select * from genre;
+
+copy
+	artist(artist_id, artist_name)
+	from 'C:\Users\Public\csv\artist.csv' delimiter ';' csv header;
+
+select * from artist;
+
+copy
+	song_artists(artists_id, track_id, artist_id_1, artist_id_2, artist_id_3 , artist_id_4, artist_id_5)
+	from 'C:\Users\Public\csv\song_artists.csv' delimiter ';' csv header;
+
+select * from song_artists;
+
+copy
+	song(track_id, artists_id, track_name, album_name, genre_id)
+	from 'C:\Users\Public\csv\song.csv' delimiter ';' csv header;
+
+select * from song;
+
+copy
+	information(track_id, popularity, duration_ms , explicit, danceability, energy, tempo)
+	from 'C:\Users\Public\csv\information.csv' delimiter ';' csv header;
+
+select * from information;
+
+copy
+	specs(track_id, key, loudness, mode, speechiness, acoousticness, liveness, valence, time_signature)
+	from 'C:\Users\Public\csv\specs.csv' delimiter ';' csv header;
+	
+select * from specs;
