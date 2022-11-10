@@ -1,0 +1,15 @@
+Los posible escenarios identificados, son los siguientes:
+1. ¿Cuáles son las estadisticas del género de más escuchado y los posibles factores más influyentes?
+  El fin de este escenario es mostrar una serie de tablas para analisis, en las que se logren observar los porcentajes de influencia de distintos factores dentro del género
+  más escuchado y hacer una suposición de cuales son los posibles factores más influyentes.
+
+2. ¿Cuál es el ranking de las canciones, géneros y artistas según su popularidad en spotify?
+  Este escenario busca generar una lista de posicionamiento para canciones, artistas y generos según su popularidad en spotify.
+
+3. ¿Qué efecto tienen los valores especificos de una canción en su popularidad?
+  Este tercer escenario quiere mirar el effecto de distintos valores en distintas canciones, principalmente las más altas y más bajas del ranking. De allí analizar que 
+  factores hay en común o que tengan relación que pueda influir en su posicionamiento.
+
+4. ¿Qué género de música y qué canciones debería ser el más recomendado por spotify para aumentar la popularidad de las canciones menos populares?
+  El último escenario plantea la situación de que género de los más bajos en Spotify debería ser el más recomendado por el algoritmo de la aplicación. Para que suba su 
+  posicionamiento en el ranking y que canciones de este genero son las más optimas para ser recomendadas.
