@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="1.0.0-beta" use-changelog="false" last-position="0,186" last-zoom="1" max-obj-count="10"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<database name="new_database" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="song" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="680" y="300"/>
+	<column name="track_id" not-null="true">
+		<type name="character varying" length="70"/>
+	</column>
+	<column name="artists_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="track_name" not-null="true">
+		<type name="character varying" length="50"/>
+	</column>
+	<column name="album_name">
+		<type name="character varying" length="40"/>
+	</column>
+	<column name="genre_id">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="song_pkey" type="pk-constr" table="public.song">
+		<columns names="track_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="artist" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="0" y="920"/>
+	<column name="artist_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="artist_name">
+		<type name="character varying" length="120"/>
+	</column>
+	<constraint name="artist_pkey" type="pk-constr" table="public.artist">
+		<columns names="artist_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="genre" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1320" y="360"/>
+	<column name="genre_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="genre_name" not-null="true">
+		<type name="character varying" length="40"/>
+	</column>
+	<constraint name="genre_pkey" type="pk-constr" table="public.genre">
+		<columns names="genre_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="song_information" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1160" y="720"/>
+	<column name="track_id" not-null="true">
+		<type name="character varying" length="70"/>
+	</column>
+	<column name="popularity" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="duration_ms" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="explicit" not-null="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="danceability" not-null="true">
+		<type name="decimal" length="0"/>
+	</column>
+	<column name="energy" not-null="true">
+		<type name="decimal" length="0"/>
+	</column>
+	<column name="tempo" not-null="true">
+		<type name="decimal" length="0"/>
+	</column>
+	<constraint name="song_information_pkey" type="pk-constr" table="public.song_information">
+		<columns names="track_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="specs" layers="0" collapse-mode="2" max-obj-count="10" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="20" y="280"/>
+	<column name="track_id" not-null="true">
+		<type name="character varying" length="70"/>
+	</column>
+	<column name="key" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="loudness" not-null="true">
+		<type name="decimal" length="0"/>
+	</column>
+	<column name="mode">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="speechiness" not-null="true">
+		<type name="decimal" length="0"/>
+	</column>
+	<column name="acoousticness" not-null="true">
+		<type name="decimal" length="0"/>
+	</column>
+	<column name="liveness">
+		<type name="decimal" length="0"/>
+	</column>
+	<column name="valence">
+		<type name="decimal" length="0"/>
+	</column>
+	<column name="time_signature" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="specs_pkey" type="pk-constr" table="public.specs">
+		<columns names="track_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="song_artists" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="520" y="640"/>
+	<column name="artists_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="track_id">
+		<type name="character varying" length="70"/>
+	</column>
+	<column name="artist_id_1">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="artist_id_2">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="artist_id_3">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="artist_id_4">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="artist_id_5">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="song_artists_pkey" type="pk-constr" table="public.song_artists">
+		<columns names="artists_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="song_genre_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.genre" table="public.song">
+	<columns names="genre_id" ref-type="src-columns"/>
+	<columns names="genre_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="song_song_artists_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.song_artists" table="public.song">
+	<columns names="artists_id" ref-type="src-columns"/>
+	<columns names="artists_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="information_song_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.song" table="public.song_information">
+	<columns names="track_id" ref-type="src-columns"/>
+	<columns names="track_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="specs_song_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.song" table="public.specs">
+	<columns names="track_id" ref-type="src-columns"/>
+	<columns names="track_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="song_artist_1_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.artist" table="public.song_artists">
+	<columns names="artist_id_1" ref-type="src-columns"/>
+	<columns names="artist_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="song_artist_2_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.artist" table="public.song_artists">
+	<columns names="artist_id_2" ref-type="src-columns"/>
+	<columns names="artist_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="song_artist_3_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.artist" table="public.song_artists">
+	<columns names="artist_id_3" ref-type="src-columns"/>
+	<columns names="artist_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="song_artist_4_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.artist" table="public.song_artists">
+	<columns names="artist_id_4" ref-type="src-columns"/>
+	<columns names="artist_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="song_artist_5_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.artist" table="public.song_artists">
+	<columns names="artist_id_5" ref-type="src-columns"/>
+	<columns names="artist_id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_song_genre" type="relfk" layers="0"
+	 src-table="public.song"
+	 dst-table="public.genre" reference-fk="song_genre_fkey"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_song_information_song" type="relfk" layers="0"
+	 src-table="public.song_information"
+	 dst-table="public.song" reference-fk="information_song_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_specs_song" type="relfk" layers="0"
+	 src-table="public.specs"
+	 dst-table="public.song" reference-fk="specs_song_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_song_artists_artist" type="relfk" layers="0"
+	 src-table="public.song_artists"
+	 dst-table="public.artist" reference-fk="song_artist_1_fkey"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_song_artists_artist1" type="relfk" layers="0"
+	 src-table="public.song_artists"
+	 dst-table="public.artist" reference-fk="song_artist_2_fkey"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_song_artists_artist2" type="relfk" layers="0"
+	 src-table="public.song_artists"
+	 dst-table="public.artist" reference-fk="song_artist_3_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_song_artists_artist3" type="relfk" layers="0"
+	 src-table="public.song_artists"
+	 dst-table="public.artist" reference-fk="song_artist_4_fkey"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_song_artists_artist4" type="relfk" layers="0"
+	 src-table="public.song_artists"
+	 dst-table="public.artist" reference-fk="song_artist_5_fkey"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_song_song_artists" type="relfk" layers="0"
+	 src-table="public.song"
+	 dst-table="public.song_artists" reference-fk="song_song_artists_fkey"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>
