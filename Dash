@@ -1,0 +1,194 @@
+from dash import Dash, html, dcc
+import plotly.express as px
+import psycopg2
+
+try:
+    connection = psycopg2.connect(
+        host='localhost',
+        user='postgres',
+        password='4858',
+        database='proyecto'
+    )
+    print("Conexión exitosa")
+    cursor = connection.cursor()
+    cursor.execute(
+        "select g.genre_name, sum(s.genre_id) as total from song as s JOIN genre as g on s.genre_id = g.genre_id group by g.genre_name order by total desc")
+    rows = cursor.fetchall()
+    for row in rows:
+        print(row)
+    app = Dash(__name__)
+    fig1 = px.bar(rows, x=0, y=1, color_discrete_sequence=["#00ff00"])
+
+    cursor.execute(
+        "select g.genre_name, round(avg(i.popularity),2) as popularity  from information as i, genre as g, song as s where g.genre_id = s.genre_id and s.track_id = i.track_id  group by  g.genre_name order by popularity desc")
+    rows2 = cursor.fetchmany(30)
+    for row in rows2:
+        print(row)
+    fig2 = px.violin(rows2, x=0, y=1, color_discrete_sequence=["#000000"])
+
+    cursor.execute(
+        "select r.artist_name, round(avg(i.popularity),2) as popularity from information as i, genre as g, song as s, artist as r where r.artist_id = s.artists_id and s.track_id = i.track_id group by  r.artist_name, i.popularity order by i.popularity desc")
+    rows3 = cursor.fetchmany(30)
+    for row in rows3:
+        print(row)
+    fig3 = px.histogram(rows3, x=0, y=1, color_discrete_sequence=["#aa44dd"])
+
+    cursor.execute(
+        "select g.genre_name, count(i.explicit) as _explicitas, round(avg(i.popularity),2) from information as i join song as s on i.track_id = s.track_id join genre as g on s.genre_id = g.genre_id where i.explicit= 'VERDADERO'  and 73010 >=  some(select sum(s.genre_id) as total from song as s JOIN genre as g on s.genre_id = g.genre_id group by g.genre_name order by total desc)group by g.genre_name order by _explicitas")
+    rows4 = cursor.fetchmany(30)
+    for row in rows4:
+        print(row)
+    fig4 = px.scatter(rows4, x=0, y=1, color_discrete_sequence=["#0000ff"])
+
+    cursor.execute(
+        "select s.track_name, round(avg(i.popularity), 2) as popularity from information as i, song as s where s.track_id = i.track_id and i.popularity > 70 group by s.track_name, popularity order by popularity desc")
+    rows8 = cursor.fetchmany(30)
+    for row in rows8:
+        print(row)
+    fig8 = px.funnel(rows8, x=0, y=1, color_discrete_sequence=["#0000ff"])
+
+
+    cursor.execute(
+        "select g.genre_name, count(i.explicit) as _explicitas, round(avg(i.popularity),2) from information as i join song as s on i.track_id = s.track_id join genre as g on s.genre_id = g.genre_id where i.explicit= 'FALSO' and 73010 >=  some(select sum(s.genre_id) as total from song as s JOIN genre as g on s.genre_id = g.genre_id group by g.genre_name order by total desc) group by g.genre_name order by _explicitas")
+    rows5 = cursor.fetchmany(30)
+    for row in rows5:
+        print(row)
+    fig5 = px.scatter(rows5, x=0, y=1, color_discrete_sequence=["#0000ff"])
+
+    cursor.execute(
+        "select g.genre_name, round(avg(i.popularity),2) as popularity  from information as i, genre as g, song as s where g.genre_id = s.genre_id and s.track_id = i.track_id  group by  g.genre_name order by popularity asc")
+    rows6 = cursor.fetchmany(30)
+    for row in rows6:
+        print(row)
+    fig6 = px.line(rows6, x=0, y=1, color_discrete_sequence=["#000000"])
+
+    cursor.execute(
+        "select r.artist_name, round(avg(i.popularity),2) as popularity from information as i, genre as g, song as s, artist as r where r.artist_id = s.artists_id and s.track_id = i.track_id and i.popularity > 0 group by  r.artist_name, i.popularity order by i.popularity asc")
+    rows7 = cursor.fetchmany(30)
+    for row in rows7:
+        print(row)
+    fig7 = px.histogram(rows7, x=0, y=1, color_discrete_sequence=["#aa44dd"])
+
+    app.layout = html.Div(children=[
+        html.H1(children='Spotify'),
+            html.Div([
+                html.Div([
+                    html.H1(children='Escenario 1: Estadisticas'),
+
+                    html.Div(children='''
+                        Dash: A web application framework for Python.
+                    '''),
+
+                    dcc.Graph(
+                        id='graph1',
+                        figure=fig1
+                    ),
+                ], className='six columns'),
+                html.Div([
+                    html.H1(children='Escenario 2: Popularidad de Generos'),
+
+                    html.Div(children='''
+                        Se puede observar que los entre los 5 géneros escuchados (pop-film, k-pop, pop, chill y metal) se encuentran 2 sub-géneros (pop-film y k-pop) y 1 género general que es el pop. Estos 5 géneros tienen una popularidad  mayor a 54. Según esto, podemos suponer que un para que una canción tenga una alta popularidad, esta debe ser de género pop o alguno de sus subgeneros.
+                    '''),
+
+                    dcc.Graph(
+                        id='graph2',
+                        figure=fig2
+                    ),
+                ], className='six columns'),
+            ], className='row'),
+
+            html.Div([
+                html.H1(children='Escenario 2: Popularidad de Artistas'),
+
+                html.Div(children='''
+                    Frente a esta gráfica de barras sobre la popularidad de los artistas se logra ver que los artistas top 5 de popularidad son: [Masters:100 ; Mat Kearney:98 ; Armağan Oruç:93 ; Jordan Davis:93 ; mc jhenny:93]. Quienes les siguen no tienen valores de popularidad muy distantes. Adicionalmente, la gráfica se tuvo que limitar a los primeros 30 datos, por la cantidad de artistas incluidos en la tabla. Enfocándose así únicamente en los más populares de la aplicación. La ventaja que se nota en esta gráfica es que las ganancias que aportan los artistas a la aplicación no son dependientes de un artista en especifico que rebase notablemente al resto en popularidad. La desventaja es que la cantidad de artistas es tan grande y tan pareja que no alcanzan a verse todos en una grafica por lo que los análisis de ranking alto y ranking bajo se tuvieron que separar en dos.
+                '''),
+
+                dcc.Graph(
+                    id='graph3',
+                    figure=fig3
+                ),
+            ], className='row'),
+            html.Div([
+                html.H1(children='Escenario 2: Popularidad de Canciones'),
+
+                html.Div(children='''
+                            Dash: A web application framework for Python.
+                            '''),
+
+                dcc.Graph(
+                    id='graph8',
+                    figure=fig8
+                ),
+            ], className='row'),
+            html.Div([
+                html.H1(children='Escenario 3: Analizando valores explicito'),
+
+                html.Div(children='''
+                    En el escenario tres podemos ver que la influencia que tiene que una canción sea explica o no ya que si esta lo es como podemos apreciar que las géneros de las canciones que son explicitas no llegan a tener una gran popularidad. en cambio las que no son explicitas suelen ser mas escuchadas, esto debido a que tienen mas alcance ya que no tienen la limitante de que al ser explica cierto publico no quiera o no pueda escucharla siquiera.
+                    '''),
+
+                dcc.Graph(
+                    id='graph4',
+                    figure=fig4
+                ),
+            ], className='row'),
+                html.Div([
+                    html.H1(children='Escenario 3: Analizando valores NO explicito'),
+
+                    dcc.Graph(
+                        id='graph5',
+                        figure=fig5
+                    ),
+                ], className='row'),
+
+                    html.Div([
+                        html.H1(children='Escenario 4: Generos no tan populares'),
+
+                        html.Div(children='''
+                         De los géneros no  tan populares podemos concluir que no se escuchan porque son géneros pasados de moda o son muy poco común de conocidos ya que casi nadie escucha ese tipo de música y por ende no pueden no se pueden dar a conocer y aumentar su popularidad.
+                        '''),
+
+                        dcc.Graph(
+                            id='graph6',
+                            figure=fig6
+                        ),
+                    ], className='row'),
+
+                    html.Div([
+                        html.H1(children='Escenario 4: Canciones no tan populares'),
+
+                        html.Div(children='''
+                        En los canciones poco populares concluimos que son muy poco conocidas por dos grandes razones, la primera es que al ser canciones también de géneros poco conocidos no pueden llegar a dar un gran salto a la fama y la segunda es que no hay registros que den pie a darse a conocer mas fácilmente.
+                
+                        '''),
+
+                        dcc.Graph(
+                            id='graph7',
+                            figure=fig7
+                        ),
+                    ], className='row'),
+        html.Div([
+            html.H1(children='Conclusión'),
+            html.Div(children='''
+            Para el exito del proyecto se pasaron por varias etapas, empezamos por el reto de escoger una base de datos que se acogiera a los parametros necesarios,
+    luego de revisar varias bases de datos, luego discutir el tema y los posibles analisis que les podiamos hacer nos decidimos por "spotify tracks data set",
+    una vez con nuestra base de datos empezamos con la construcción de nuestro modelo entidad-relación para poder luego estructurarla en pgmodeler y tener un
+    poco más de claridad en las posibilidades de nuestra base de datos, luego decidimos tener más claro el como podiamos relacionar las tablas sin que nos
+    surgieran errores de compativilidad, por lo tanto la normalizamos y pasamos a nuestro sql, luego empezamos a preguntarnos los detalles de nuestro problema,
+    por consiguiente pudimos hacer nuestras consultas a la base de datos que construimos para implementarlas en el Dash y poder generar los respectivos analisis
+    que nos generaban los datos de nuestras consultas.
+    ''')])
+
+    ])
+    if __name__ == '__main__':
+        app.run_server(debug=True)
+
+
+
+except Exception as ex:
+    print(ex)
+finally:
+    connection.close()
+    print("Conexion finalizada")
